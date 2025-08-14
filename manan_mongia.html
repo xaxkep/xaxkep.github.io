@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manan Mongia — Architecting Digital Futures</title>
+  <meta name="description" content="Single-page portfolio website for Manan Mongia — Architecting Digital Futures." />
+  <meta name="theme-color" content="#0ea5e9" />
+  <style>
+    :root{
+      --bg: #0b0f14;
+      --card: #0f1621;
+      --muted: #9fb3c8;
+      --text: #e6edf6;
+      --brand: #0ea5e9;
+      --brand-2: #22d3ee;
+      --ring: rgba(14,165,233,.3);
+      --ok: #22c55e;
+      --warn:#f59e0b;
+      --err:#ef4444;
+      --shadow: 0 10px 30px rgba(2,8,23,.35);
+    }
+    :root.light{
+      --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --muted:#475569; --shadow:0 10px 30px rgba(2,8,23,.08);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1120px;margin:0 auto;padding:0 20px}
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:1000;background:rgba(11,15,20,.75);backdrop-filter:saturate(120%) blur(8px);
+      border-bottom:1px solid rgba(148,163,184,.12)
+    }
+    :root.light header{background:rgba(255,255,255,.75)}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+    .logo{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.2px}
+    .logo-dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 0 0 4px var(--ring)}
+    nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    nav a{display:inline-block;padding:8px 12px;border-radius:10px}
+    nav a.active, nav a:hover{background:rgba(148,163,184,.12)}
+    .actions{display:flex;align-items:center;gap:10px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid rgba(148,163,184,.18);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0));color:var(--text);transition:transform .06s ease, box-shadow .2s}
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+    .btn.primary{border-color:transparent;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#001019}
+    .icon{width:18px;height:18px;display:inline-block}
+    .theme-toggle{border-radius:12px;border:1px solid rgba(148,163,184,.18);width:42px;height:36px;display:grid;place-items:center}
+    .hamburger{display:none}
+
+    /* Hero */
+    .hero{padding:96px 0 36px}
+    .hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+    .badge{display:inline-flex;gap:8px;align-items:center;border:1px dashed rgba(148,163,184,.35);padding:6px 10px;border-radius:999px;font-size:13px;color:var(--muted)}
+    h1{font-size:clamp(32px,4vw,48px);line-height:1.1;margin:12px 0 14px}
+    .lead{font-size:18px;color:var(--muted);margin:0 0 24px}
+    .chip-row{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 28px}
+    .chip{border:1px solid rgba(148,163,184,.18);padding:8px 12px;border-radius:999px;font-size:13px;color:var(--muted)}
+    .hero-card{background:radial-gradient(1000px 450px at -10% -10%,rgba(34,211,238,.08),transparent),linear-gradient(180deg,rgba(148,163,184,.08),rgba(148,163,184,.04));border:1px solid rgba(148,163,184,.14);padding:22px;border-radius:18px;box-shadow:var(--shadow)}
+    .stat-grid{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .stat{background:var(--card);border:1px solid rgba(148,163,184,.14);border-radius:14px;padding:14px;text-align:center}
+    .stat .num{font-weight:800;font-size:24px}
+    .stat .sub{font-size:12px;color:var(--muted)}
+
+    /* Sections */
+    section{padding:64px 0}
+    .section-title{display:flex;align-items:baseline;gap:10px;margin-bottom:22px}
+    .section-title .hash{color:var(--brand);font-weight:800}
+    .grid{display:grid;gap:18px}
+
+    /* About */
+    .about{grid-template-columns:1fr 1fr}
+    .kicker{font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.12em;font-size:12px}
+    .prose p{margin:10px 0;color:var(--muted)}
+
+    /* Services */
+    .cards{grid-template-columns:repeat(3,1fr)}
+    .card{background:var(--card);border:1px solid rgba(148,163,184,.14);border-radius:16px;padding:18px;transition:transform .12s ease, box-shadow .2s}
+    .card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+    .card h3{margin:8px 0 8px}
+    .pill{display:inline-block;background:rgba(14,165,233,.14);border:1px solid rgba(14,165,233,.5);color:#a5e8ff;border-radius:999px;padding:4px 8px;font-size:12px}
+    :root.light .pill{color:#075985}
+
+    /* Portfolio */
+    .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+    .filter{padding:8px 12px;border:1px solid rgba(148,163,184,.18);border-radius:999px;font-size:14px;color:var(--muted);cursor:pointer}
+    .filter.active{background:rgba(14,165,233,.14);color:#a5e8ff;border-color:rgba(14,165,233,.5)}
+    :root.light .filter.active{color:#0369a1}
+    .work-grid{grid-template-columns:repeat(3,1fr)}
+    .work{
+      position:relative;overflow:hidden;border-radius:16px;border:1px solid rgba(148,163,184,.14);
+      background:linear-gradient(180deg,rgba(148,163,184,.12),rgba(148,163,184,.06));
+    }
+    .work img{display:block;width:100%;height:180px;object-fit:cover}
+    .work .meta{padding:14px}
+    .work .tag{font-size:12px;color:var(--muted)}
+
+    /* Timeline */
+    .timeline{position:relative;margin-left:8px}
+    .timeline:before{content:"";position:absolute;left:12px;top:0;bottom:0;width:2px;background:linear-gradient(var(--brand),transparent)}
+    .tl-item{position:relative;padding-left:40px;margin:16px 0}
+    .tl-item:before{content:"";position:absolute;left:6px;top:6px;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:0 0 0 4px var(--ring)}
+    .tl-item h4{margin:0}
+    .tl-item .sub{color:var(--muted);font-size:14px}
+
+    /* Testimonials */
+    .slider{position:relative}
+    .slides{display:flex;overflow:hidden;scroll-behavior:smooth;border-radius:16px}
+    .testimonial{min-width:100%;padding:24px;background:var(--card);border:1px solid rgba(148,163,184,.14)}
+    .slider .navbtn{position:absolute;top:50%;transform:translateY(-50%);border:none;background:rgba(2,8,23,.35);color:#fff;border-radius:999px;width:42px;height:42px;display:grid;place-items:center;cursor:pointer}
+    .slider .prev{left:8px} .slider .next{right:8px}
+
+    /* Contact */
+    form{display:grid;gap:12px}
+    form button[type="submit"] {justify-content: center;}
+    input, textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(148,163,184,.24);background:transparent;color:var(--text)}
+    input:focus, textarea:focus{outline:none;box-shadow:0 0 0 4px var(--ring);border-color:var(--brand)}
+    .note{font-size:13px;color:var(--muted)}
+
+    /* Footer */
+    footer{padding:36px 0;color:var(--muted)}
+
+    /* Utilities */
+    .row{display:flex;gap:14px;flex-wrap:wrap}
+    .col{flex:1 1 240px}
+    .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(148,163,184,.25),transparent);margin:28px 0}
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .hero .wrap{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr 1fr}
+      .work-grid{grid-template-columns:1fr 1fr}
+      nav ul{display:none}
+      .hamburger{display:inline-flex}
+    }
+    @media (max-width: 600px){
+      .cards{grid-template-columns:1fr}
+      .work-grid{grid-template-columns:1fr}
+      .stat-grid{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#top" aria-label="Go to top">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span>Manan Mongia</span>
+      </a>
+      <nav aria-label="Primary">
+        <ul id="navlist">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#testimonials">Praise</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="actions">
+        <button id="theme" class="theme-toggle" title="Toggle theme" aria-label="Toggle theme">☀️</button>
+        <button id="hamburger" class="btn hamburger" aria-expanded="false" aria-controls="navsheet">☰</button>
+        <a class="btn primary" href="#contact">Let’s Talk</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container wrap">
+        <div>
+          <span class="badge"><span class="icon">🚀</span> Architecting Digital Futures</span>
+          <h1>Designer–Developer crafting performant, human‑centered products.</h1>
+          <p class="lead">I help founders and teams rapidly go from concept to polished reality — with an obsession for usability, speed, and maintainability.</p>
+          <div class="chip-row" aria-label="Key skills">
+            <span class="chip">Product Strategy</span>
+            <span class="chip">UX/UI Design</span>
+            <span class="chip">Full‑Stack (PHP, JS)</span>
+            <span class="chip">Automation</span>
+            <span class="chip">AI Integrations</span>
+          </div>
+          <div class="row">
+            <a class="btn primary" href="#work">View Projects</a>
+            <a class="btn" href="#contact">Get a Quote</a>
+          </div>
+          <div class="stat-grid" role="list" aria-label="Highlights">
+            <div class="stat" role="listitem"><div class="num" data-count="120">0</div><div class="sub">Projects shipped</div></div>
+            <div class="stat" role="listitem"><div class="num" data-count="35">0</div><div class="sub">Happy clients</div></div>
+            <div class="stat" role="listitem"><div class="num" data-count="9">0</div><div class="sub">Years experience</div></div>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="kicker">Featured</div>
+          <h3 style="margin:6px 0 6px">Negocia FX Platform</h3>
+          <p class="lead" style="font-size:15px">Built a custom solution for investment and generation plan businesses, focusing on scalability. Built with PHP + MySQL, optimized for speed.</p>
+          <div class="row">
+            <span class="pill">Dashboards</span>
+            <span class="pill">Analytics</span>
+            <span class="pill">Scale‑ready</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- About -->
+    <section id="about">
+      <div class="container grid about">
+        <div>
+          <div class="section-title"><span class="hash">#</span><h2 style="margin:0">About</h2></div>
+          <p class="kicker">A blend of product sense and engineering rigor</p>
+          <div class="prose">
+            <p>I design and develop web products end‑to‑end: from research and wireframes to production‑ready code. I favor simple, robust architectures and measurable outcomes.</p>
+            <p>Recent focus areas: performance tuning in PHP/MySQL, server‑side pagination with search, role‑based access, and automation workflows across WhatsApp/Telegram.</p>
+          </div>
+          <div class="chip-row">
+            <span class="chip">PHP • CodeIgniter • Laravel</span>
+            <span class="chip">MySQL • PostgreSQL</span>
+            <span class="chip">Node • Express</span>
+            <span class="chip">HTML • CSS • JS</span>
+            <span class="chip">Odoo Ops</span>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <h3>What you can expect</h3>
+            <ul>
+              <li>Clear communication and scope control</li>
+              <li>Accessible, responsive UI with dark/light themes</li>
+              <li>Clean, maintainable code with performance in mind</li>
+              <li>Fast iterations, zero unnecessary changes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+      <div class="container">
+        <div class="section-title"><span class="hash">#</span><h2 style="margin:0">Services</h2></div>
+        <div class="grid cards">
+          <article class="card">
+            <div class="pill">Discovery</div>
+            <h3>Product Strategy</h3>
+            <p class="lead">Shaping ideas into feasible roadmaps. Market fit, scope, and KPIs with clarity.</p>
+          </article>
+          <article class="card">
+            <div class="pill">Design</div>
+            <h3>UX/UI & Prototyping</h3>
+            <p class="lead">Wireframes to pixel‑perfect. Accessible patterns, component libraries, design systems.</p>
+          </article>
+          <article class="card">
+            <div class="pill">Build</div>
+            <h3>Full‑Stack Development</h3>
+            <p class="lead">Modern PHP/JS stacks, APIs, dashboards, payments, automation, and integrations.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section id="work">
+      <div class="container">
+        <div class="section-title"><span class="hash">#</span><h2 style="margin:0">Selected Work</h2></div>
+        <div class="filters" role="tablist" aria-label="Filter projects">
+          <button class="filter active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="filter" data-filter="dashboard" role="tab">Dashboards</button>
+          <button class="filter" data-filter="ecommerce" role="tab">E‑commerce</button>
+          <button class="filter" data-filter="automation" role="tab">Automation</button>
+        </div>
+        <div class="grid work-grid" id="workGrid">
+          <article class="work" data-tags="dashboard">
+            <img alt="Negocia FX investment platform" src="https://images.unsplash.com/photo-1551281044-8d8d2aa0d0d0?q=80&w=1200&auto=format&fit=crop" />
+            <div class="meta">
+              <div class="tag">Fintech</div>
+              <h3>Negocia FX</h3>
+              <p class="lead">Scalable investment & plan management platform.</p>
+            </div>
+          </article>
+          <article class="work" data-tags="ecommerce">
+            <img alt="E‑commerce storefront" src="https://images.unsplash.com/photo-1516245834210-c4c142787335?q=80&w=1200&auto=format&fit=crop" />
+            <div class="meta">
+              <div class="tag">E‑commerce</div>
+              <h3>Shopfront Lite</h3>
+              <p class="lead">Razorpay integration, order capture, delivery coordination.</p>
+            </div>
+          </article>
+          <article class="work" data-tags="automation">
+            <img alt="Automation flows" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" />
+            <div class="meta">
+              <div class="tag">Automation</div>
+              <h3>WhatsApp Bots</h3>
+              <p class="lead">Lead capture, broadcast campaigns, status updates.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience">
+      <div class="container">
+        <div class="section-title"><span class="hash">#</span><h2 style="margin:0">Experience</h2></div>
+        <div class="timeline" aria-label="Timeline">
+          <div class="tl-item">
+            <h4>Ixooweb IT Solution — Co-Owner & Senior Developer</h4>
+            <div class="sub">May 2020 - Present</div>
+            <p>Spearheaded strategic direction and technical development of custom IT solutions. Led multidisciplinary teams to deliver web development, graphic design, and content creation, meeting diverse client needs.</p>
+          </div>
+          <div class="tl-item">
+            <h4>Techurban - Co-Owner & Senior Developer</h4>
+            <div class="sub">Oct 2019 - May 2020</div>
+            <p>Founded and grew Techurban, specializing in web development, graphic design, and digital content. Oversaw project development, client relations, and team management, establishing a reputation for custom solutions.</p>
+          </div>
+          <div class="tl-item">
+            <h4>XakepShield - Senior Web Developer</h4>
+            <div class="sub">Mar 2018 - Oct 2019</div>
+            <p>Played a pivotal role in key projects, driving development processes for top-notch web solutions. Collaborated closely with developers, designers, and stakeholders to deliver high-quality, secure, and scalable web applications.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+      <div class="container">
+        <div class="section-title"><span class="hash">#</span><h2 style="margin:0">What Clients Say</h2></div>
+        <div class="slider">
+          <div class="slides" id="slides">
+            <blockquote class="testimonial">
+              <p>“Manan turned our complex NGO requirements into a clean, fast platform. The dashboards are a joy to use.”</p>
+              <footer>— NGO Program Lead</footer>
+            </blockquote>
+            <blockquote class="testimonial">
+              <p>“From idea to launch in record time. Clear communication, zero fuss, and great performance.”</p>
+              <footer>— Startup Founder</footer>
+            </blockquote>
+            <blockquote class="testimonial">
+              <p>“Our admin tools finally scale. Queries that took seconds now return instantly.”</p>
+              <footer>— Operations Head</footer>
+            </blockquote>
+          </div>
+          <button class="navbtn prev" aria-label="Previous">‹</button>
+          <button class="navbtn next" aria-label="Next">›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-title"><span class="hash">#</span><h2 style="margin:0">Let’s build</h2></div>
+        <div class="row">
+          <div class="col">
+            <form id="contactForm" novalidate>
+              <label class="visually-hidden" for="name">Name</label>
+              <input id="name" name="name" placeholder="Your name" required />
+              <label class="visually-hidden" for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="Email address" required />
+              <label class="visually-hidden" for="msg">Message</label>
+              <textarea id="msg" name="message" rows="5" placeholder="Tell me about your project" required></textarea>
+              <button class="btn primary" type="submit">Send Message</button>
+              <p class="note" id="formNote" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+          <div class="col">
+            <div class="card">
+              <h3>Availability</h3>
+              <p class="lead">Booking new projects for <strong>September 2025</strong>.</p>
+              <p class="lead">Prefer PHP/JS dashboards, automations, and performance fixes.</p>
+              <div style="margin-top:10px">
+                <a class="btn" href="https://wa.me/919079378870?text=Hi%2C%20I%20saw%20your%20profile%20and%20wanted%20to%20talk." target="_blank" rel="noopener">WhatsApp</a>
+                <a class="btn" href="mailto:mananmongya@gmail.com">Email</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container row" style="justify-content:space-between;align-items:center">
+      <div>© <span id="year"></span> Manan Mongia. All rights reserved.</div>
+      <div class="note">Built with vanilla HTML/CSS/JS — no frameworks.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle (persist in localStorage)
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('theme');
+    const saved = localStorage.getItem('theme');
+    if(saved === 'light') root.classList.add('light');
+    themeBtn.textContent = root.classList.contains('light') ? '🌙' : '☀️';
+    themeBtn.addEventListener('click', ()=>{
+      root.classList.toggle('light');
+      themeBtn.textContent = root.classList.contains('light') ? '🌙' : '☀️';
+      localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    });
+
+    // Mobile nav sheet
+    const burger = document.getElementById('hamburger');
+    const navList = document.getElementById('navlist');
+    burger?.addEventListener('click', ()=>{
+      const open = navList.style.display === 'flex';
+      navList.style.display = open ? 'none' : 'flex';
+      navList.style.flexDirection = 'column';
+      navList.style.gap = '8px';
+      burger.setAttribute('aria-expanded', String(!open));
+    });
+
+    // Scroll spy
+    const links = Array.from(document.querySelectorAll('nav a'));
+    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const spy = new IntersectionObserver((entries)=>{
+      entries.forEach(entry => {
+        const id = '#' + entry.target.id;
+        const link = links.find(a=>a.getAttribute('href')===id);
+        if(entry.isIntersecting){
+          links.forEach(a=>a.classList.remove('active'));
+          link?.classList.add('active');
+        }
+      })
+    }, {rootMargin: '-50% 0px -49% 0px', threshold: 0});
+    sections.forEach(s=>spy.observe(s));
+
+    // Counters
+    document.querySelectorAll('.num').forEach(el=>{
+      const target = +el.dataset.count;
+      const obs = new IntersectionObserver(([e])=>{
+        if(!e.isIntersecting) return;
+        let cur=0; const step = Math.max(1, Math.floor(target/60));
+        const tick = ()=>{cur += step; if(cur>target) cur=target; el.textContent = cur; if(cur<target) requestAnimationFrame(tick)};
+        requestAnimationFrame(tick);
+        obs.disconnect();
+      }, {threshold:.8});
+      obs.observe(el);
+    });
+
+    // Filters
+    const buttons = document.querySelectorAll('.filter');
+    const items = document.querySelectorAll('.work');
+    buttons.forEach(btn=>btn.addEventListener('click', ()=>{
+      buttons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const tag = btn.dataset.filter;
+      items.forEach(card=>{
+        const show = tag==='all' || card.dataset.tags.includes(tag);
+        card.style.display = show ? 'block' : 'none';
+      });
+    }));
+
+    // Testimonial slider
+    const slides = document.getElementById('slides');
+    const prev = document.querySelector('.prev');
+    const next = document.querySelector('.next');
+    let idx = 0;
+    function go(i){ idx = (i + slides.children.length) % slides.children.length; slides.scrollTo({left: slides.clientWidth * idx, behavior:'smooth'}); }
+    prev.addEventListener('click', ()=>go(idx-1));
+    next.addEventListener('click', ()=>go(idx+1));
+    let auto = setInterval(()=>go(idx+1), 5000);
+    slides.addEventListener('pointerenter', ()=>clearInterval(auto));
+    slides.addEventListener('pointerleave', ()=>auto=setInterval(()=>go(idx+1), 5000));
+
+    // Contact form (demo only)
+    const form = document.getElementById('contactForm');
+    const note = document.getElementById('formNote');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if(!form.reportValidity()) return;
+      const data = Object.fromEntries(new FormData(form).entries());
+      console.log('Form submission', data);
+      note.textContent = 'Thanks! I will get back to you within 1 business day.';
+      note.style.color = 'var(--ok)';
+      form.reset();
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
