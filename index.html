@@ -186,9 +186,9 @@
             <a class="btn" href="#contact">Get a Quote</a>
           </div>
           <div class="stat-grid" role="list" aria-label="Highlights">
-            <div class="stat" role="listitem"><div class="num" data-count="120">0</div><div class="sub">Projects shipped</div></div>
-            <div class="stat" role="listitem"><div class="num" data-count="35">0</div><div class="sub">Happy clients</div></div>
-            <div class="stat" role="listitem"><div class="num" data-count="9">0</div><div class="sub">Years experience</div></div>
+            <div class="stat" role="listitem"><div class="num" data-count="220+">0</div><div class="sub">Projects shipped</div></div>
+            <div class="stat" role="listitem"><div class="num" data-count="35+">0</div><div class="sub">Happy clients</div></div>
+            <div class="stat" role="listitem"><div class="num" id="experience" data-count="7+">0</div><div class="sub">Years experience</div></div>
           </div>
         </div>
         <div class="hero-card">
@@ -370,7 +370,7 @@
           <div class="col">
             <div class="card">
               <h3>Availability</h3>
-              <p class="lead">Booking new projects for <strong>September 2025</strong>.</p>
+              <p class="lead">Booking new projects for <strong id="monthyear">September 2025</strong>.</p>
               <p class="lead">Prefer PHP/JS dashboards, automations, and performance fixes.</p>
               <div style="margin-top:10px">
                 <a class="btn" href="https://wa.me/919079378870?text=Hi%2C%20I%20saw%20your%20profile%20and%20wanted%20to%20talk." target="_blank" rel="noopener">WhatsApp</a>
@@ -481,7 +481,18 @@
     });
 
     // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const startYear = 2018;
+    const date = new Date();
+    const current_year = date.getFullYear();
+    const experience = currentYear - startYear;
+    date.setMonth(date.getMonth() + 1);
+    const formatted = date.toLocaleString("default", {
+        month: "long",
+        year: "numeric"
+    });
+    document.getElementById('year').textContent = current_year;
+    document.getElementById('monthyear').textContent = formatted;
+    document.getElementById("experience").dataset.count = experience + "+";
   </script>
 </body>
 </html>
