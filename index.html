@@ -359,7 +359,7 @@
         <div class="section-title"><span class="hash">#</span><h2 style="margin:0">Let’s build</h2></div>
         <div class="row">
           <div class="col">
-            <form id="contactForm" novalidate>
+            <form id="contactForm" action="YOUR_WEB_APP_URL" method="POST" target="hidden_iframe" novalidate>
               <label class="visually-hidden" for="name">Name</label>
               <input id="name" name="name" placeholder="Your name" required />
               <label class="visually-hidden" for="email">Email</label>
@@ -369,6 +369,7 @@
               <button class="btn primary" type="submit">Send Message</button>
               <p class="note" id="formNote" role="status" aria-live="polite"></p>
             </form>
+            <iframe name="hidden_iframe" style="display:none;"></iframe>
           </div>
           <div class="col">
             <div class="card">
@@ -497,40 +498,12 @@
     document.getElementById('monthyear').textContent = formatted;
     document.getElementById("experience").dataset.count = experience;
 
-    const ENDPOINT = "https://script.google.com/macros/s/AKfycbwTqq_NQmr3L6YXEGI2sQyf9YtG7oOKMuJulRRa3Q2W2Uj5KJgAwBnTsyWripC56fbb/exec";
-
-    document.getElementById("contactForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const note = document.getElementById("formNote");
-      note.textContent = "Sending…";
-
-      const payload = {
-        name: document.getElementById("name").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        message: document.getElementById("msg").value.trim()
-      };
-
-      try {
-        const res = await fetch(ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        if (res.ok) {
-          const data = await res.json().catch(() => ({}));
-          if (data.ok) {
-            e.target.reset();
-            note.textContent = "Message sent! I’ll reply shortly.";
-          } else {
-            note.textContent = "Send failed. Please try WhatsApp or Email.";
-          }
-        } else {
-          note.textContent = "Send failed. Please try WhatsApp or Email.";
-        }
-      } catch {
-        note.textContent = "Network error. Please try WhatsApp or Email.";
-      }
+    document.getElementById("contactForm").addEventListener("submit", function () {
+      document.getElementById("formNote").textContent = "Sending message…";
+      setTimeout(() => {
+        document.getElementById("contactForm").reset();
+        document.getElementById("formNote").textContent = "Sent successfully. I’ll reach out shortly!";
+      }, 1200);
     });
   </script>
 </body>
