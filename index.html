@@ -471,18 +471,6 @@
     slides.addEventListener('pointerenter', ()=>clearInterval(auto));
     slides.addEventListener('pointerleave', ()=>auto=setInterval(()=>go(idx+1), 5000));
 
-    // Contact form (demo only)
-    const form = document.getElementById('contactForm');
-    const note = document.getElementById('formNote');
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      if(!form.reportValidity()) return;
-      const data = Object.fromEntries(new FormData(form).entries());
-      note.textContent = 'Thanks! I will get back to you within 1 business day.';
-      note.style.color = 'var(--ok)';
-      form.reset();
-    });
-
     // Year
     const startYear = 2018;
     const date = new Date();
